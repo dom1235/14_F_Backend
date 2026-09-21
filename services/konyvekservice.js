@@ -63,6 +63,39 @@ const getKonyvekByOldalszam = (req, res) => {
     res.json(getKonyvekByOldalszam)
 }
 
+const getEvUtaniKonyvek = (req, res) => {
+    const paramEvszam = Number(req.params.evszam)
+    const konyvekEvszamUtan = konyvek.filter(konyv => konyv.year)
+}
+
+const createKonyv = (req, res) => {
+    const { title, author, category, year, pages, price } = req.body;
+
+    let maxId = 0;
+    const azonositok = konyvek.map(konyv => konyv.id);
+    for (let i = 0; i < azonositok.length; i++) {
+        if (azonositok[i] > maxId) {
+            maxId = azonositok[i];
+        }
+    }
+    let views = 0;
+    let id = maxId + 1;
+    let konyv = {
+        id,
+        title,
+        author,
+        category,
+        year,
+        pages,
+        price,
+        views
+    };
+
+    konyvek.push(konyv);
+
+    res.status(201).json(konyv);
+};
+
 module.exports = {
     getkonyvek,
     getKonyvById,
@@ -72,5 +105,7 @@ module.exports = {
     getKonyvBySzerzo,
     getKonyvKategoria,
     getKonyvekArfelett,
-    getKonyvekByOldalszam
+    getKonyvekByOldalszam,
+    getEvUtaniKonyvek,
+    createKonyv
 }

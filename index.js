@@ -10,7 +10,8 @@ const { getkonyvek,
         getKonyvBySzerzo,
         getKonyvKategoria,
         getKonyvekArfelett,
-        getKonyvekByOldalszam
+        getKonyvekByOldalszam,
+        createKonyv
         
  } = require("./services/konyvekservice");
 //ez kell ahhoz hogy request bodyt tudjak kuldeni
@@ -31,6 +32,7 @@ app.get("/konyvek/kategoria/:kategoria", getKonyvKategoria)
 app.get("/konyvek/arfelett/:arfelett",getKonyvekArfelett)
 app.get("/konyvek/oldalszam/:olszaldszam",getKonyvekByOldalszam)
 
+app.post("/konyvek", createKonyv )
 
 
 app.listen(PORT, () => {

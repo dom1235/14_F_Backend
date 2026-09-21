@@ -69,6 +69,8 @@ const getEvUtaniKonyvek = (req, res) => {
 }
 
 const createKonyv = (req, res) => {
+
+   
     const { title, author, category, year, pages, price } = req.body;
 
     let maxId = 0;
@@ -90,11 +92,57 @@ const createKonyv = (req, res) => {
         price,
         views
     };
-
     konyvek.push(konyv);
-
     res.status(201).json(konyv);
 };
+
+
+const updatekonyv =(req, res) => {
+    const {id} = req.params;
+    const { title, author, category, year, pages, price } = req.body;
+    //title author category string
+    //yearpagesprice number
+
+    if (typeof title !== "string" || 
+        typeof author !== "string" || 
+        typeof category !== "string" || 
+        typeof year !== "number" || 
+        typeof pages !== "number" || 
+        typeof price !== "number")
+    {
+        return res.status(400).json({message: "nem jol adtad meg"})
+    }
+
+    const konyv = konyvek.find(konyv => konyv.id == Number(id))
+
+    konyv.title = title;
+    konyv.author = author;
+    konyv.category = category;
+    konyv.year = year;
+    konyv.pages = pages;
+    konyv.price = price;
+
+    console.log(konyv)
+    res.json({message : "hellyoszia"})
+}
+
+const removeKonyv = (req, res) => {
+    const { id } = req.params;    
+    const index = konyvek.findIndex(konyv => konyv.id == Number(id));
+    //ha nincs ilyen idju mkonyv akkor visszaterunk egy üzenetel hogy nme letezik
+    //nem elérhető vagy már törölték!
+    if (index === -1)
+    {
+        return res.status(404).json({message:"nem elérhető vagy már törölték!"})
+    }
+
+    const toroltKonyv = konyvek.splice(index, 1);
+
+    res.json({message: "helloszia"});
+};
+
+
+
 
 module.exports = {
     getkonyvek,
@@ -107,5 +155,7 @@ module.exports = {
     getKonyvekArfelett,
     getKonyvekByOldalszam,
     getEvUtaniKonyvek,
-    createKonyv
+    createKonyv,
+    updatekonyv,
+    removeKonyv
 }
